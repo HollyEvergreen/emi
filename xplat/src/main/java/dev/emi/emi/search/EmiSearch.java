@@ -68,7 +68,9 @@ public class EmiSearch {
 				if (name != null) {
 					names.add(searchStack, name.getString().toLowerCase());
 				}
+				
 				List<Text> tooltip = stack.getTooltipText();
+				//List<Text> tooltip = List.of(Text.empty().append("Debug"), Text.empty().append("Debug"), Text.empty().append("Debug"), Text.empty().append("Debug"), Text.empty().append("Debug"));
 				if (tooltip != null) {
 					for (int i = 1; i < tooltip.size(); i++) {
 						Text text = tooltip.get(i);
@@ -77,12 +79,15 @@ public class EmiSearch {
 						}
 					}
 				}
+			
 				Identifier id = stack.getId();
 				if (id != null) {
 					mods.add(searchStack, EmiUtil.getModName(id.getNamespace()).toLowerCase());
 					mods.add(searchStack, id.getNamespace().toLowerCase());
 					names.add(searchStack, id.getPath().toLowerCase());
 				}
+				
+
 				if (stack.getItemStack().getItem() == Items.ENCHANTED_BOOK) {
 					for (Enchantment e : EnchantmentHelper.get(stack.getItemStack()).keySet()) {
 						Identifier eid = EmiPort.getEnchantmentRegistry().getId(e);
@@ -91,8 +96,11 @@ public class EmiSearch {
 						}
 					}
 				}
+			
 			} catch (Exception e) {
 				EmiLog.error("EMI caught an exception while baking search for " + stack);
+				EmiLog.error(e.getMessage());
+				
 				e.printStackTrace();
 			}
 		}

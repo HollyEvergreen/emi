@@ -13,6 +13,7 @@ import dev.emi.emi.EmiRenderHelper;
 import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.platform.EmiAgnos;
 import dev.emi.emi.runtime.EmiDrawContext;
+import dev.emi.emi.runtime.EmiLog;
 import dev.emi.emi.screen.StackBatcher.Batchable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -59,6 +60,7 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 		if (this.nbt != null) {
 			stack.setNbt(this.nbt);
 		}
+		//EmiLog.error("getItemStack");
 		return stack;
 	}
 
@@ -146,9 +148,19 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 		}
 	}
 
+
+	// TODO: reimplement this function to use an alternate tooltip function in the event of an exception caused by the function getTooltip calling the Render System
 	@Override
 	public List<Text> getTooltipText() {
-		return getItemStack().getTooltip(client.player, TooltipContext.BASIC);
+		ItemStack stack = getItemStack();
+		try {
+			List<Text> tt = stack.getTooltip(client.player, TooltipContext.BASIC);
+			//EmiLog.info("GetTooltip");
+			return tt;
+		} catch (Exception e) {
+			//EmiLog.error(e.getMessage());
+			return List.of();
+		}
 	}
 
 	@Override
